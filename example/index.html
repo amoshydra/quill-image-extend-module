@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- Include the Quill library -->
+  <script src="https://cdn.quilljs.com/1.3.4/quill.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <!-- Quill JS Vue -->
+  <script src="https://cdn.jsdelivr.net/npm/vue-quill-editor@3.0.4/dist/vue-quill-editor.js"></script>
+  <script src="https://cdn.rawgit.com/amoshydra/quill-image-extend-module-2/v2.0.1/dist/index.js"></script>
+  <!-- Include stylesheet -->
+  <link href="https://cdn.quilljs.com/1.3.4/quill.core.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.4/quill.snow.css" rel="stylesheet">
+  <link href="https://cdn.quilljs.com/1.3.4/quill.bubble.css" rel="stylesheet">
+</head>
+<body>
+
+  <div id="vueapp">
+    <quill-editor
+      v-model="content"
+      :options="editorOption"
+    ></quill-editor>
+    <br>
+    <div class="content ql-editor" v-html="content"></div>
+  </div>
+
+<script>
+var quillEditor = VueQuillEditor.quillEditor;
+var Quill = VueQuillEditor.Quill;
+var container = quillImageExtendModule.container;
+var ImageExtend = quillImageExtendModule.ImageExtend;
+var QuillWatch = quillImageExtendModule.QuillWatch;
+
+Quill.register('modules/ImageExtend', ImageExtend);
+Vue.use(VueQuillEditor);
+
+new Vue({
+  el: '#vueapp',
+  data: {
+    content: '<h2>Drag an image here</h2>',
+    editorOption: {
+      modules: {
+        ImageExtend: {
+          loading: true,
+          name: 'img',
+          size: 3,
+          action: 'https://httpbin.org/post',
+          response: function(res) {
+            return res.files.img;
+          },
+          headers: function(xhr) {},
+          start: function() {},
+          end: function() {},
+          error: function() {},
+          change: function(xhr, formData) {}
+        },
+        toolbar: {
+          container: container,
+          handlers: {
+            image: function() {
+              QuillWatch.emit(this.quill.id)
+            }
+          }
+        }
+      }
+    }
+  },
+  components: {
+    quillEditor: quillEditor,
+  },
+})
+</script>
+
+</body>
+</html>
