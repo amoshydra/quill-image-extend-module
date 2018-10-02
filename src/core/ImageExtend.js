@@ -139,12 +139,12 @@ export class ImageExtend {
                     QuillWatch.active.uploadSuccess()
                     self.insertImg()
                     if (self.config.success) {
-                        self.config.success()
+                        self.config.success(xhr)
                     }
                 } else {
                     //error
                     if (self.config.error) {
-                        self.config.error()
+                        self.config.error(xhr)
                     }
                     QuillWatch.active.uploadError()
                 }
@@ -156,7 +156,7 @@ export class ImageExtend {
             // let length = (self.quill.getSelection() || {}).index || self.quill.getLength()
             // self.quill.insertText(length, '[uploading...]', { 'color': 'red'}, true)
             if (config.start) {
-                config.start()
+                config.start(xhr)
             }
         }
         // 上传过程
@@ -168,13 +168,13 @@ export class ImageExtend {
         xhr.upload.onerror = function (e) {
             QuillWatch.active.uploadError()
             if (config.error) {
-                config.error()
+                config.error(xhr)
             }
         }
         // 上传数据完成（成功或者失败）时会触发
         xhr.upload.onloadend = function (e) {
             if (config.end) {
-                config.end()
+                config.end(xhr)
             }
         }
         xhr.send(formData)
@@ -221,4 +221,3 @@ export class ImageExtend {
             = QuillWatch.active.quill.root.innerHTML.replace(/\[uploading.*?\]/, '')
     }
 }
-
