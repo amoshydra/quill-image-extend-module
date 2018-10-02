@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "version-patch": "yarn version --patch && yarn run update-remote",
+    "version-minor": "yarn version --patch && yarn run update-remote",
+    "version-major": "yarn version --patch && yarn run update-remote",
+    "update-tag": "git push && git push --tags",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
